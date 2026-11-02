@@ -35,12 +35,12 @@ jobs:
       # 2. PROJEKT 1: Hai-Spirale bauen und kopieren
       - name: Build Project 1 (Hai Spirale)
         run: |
-          cd hai-spirale
+          cd shark
           npm ci
           npm run build
           cd ..
-          mkdir -p dist-all/hai-spirale
-          cp -r hai-spirale/dist/* dist-all/hai-spirale/ # Passe 'dist' an, falls der Ausgabeordner anders heißt
+          mkdir -p dist-all/shark
+          cp -r shark/dist/* dist-all/shark/ # Passe 'dist' an, falls der Ausgabeordner anders heißt
 
 #      # 3. PROJEKT 2: MPC-Sampler bauen und kopieren
 #      - name: Build Project 2 (MPC Sampler)
