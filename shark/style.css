@@ -1,0 +1,29 @@
+/* Remove default margins and hide scrollbars */
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #011125;
+    font-family: sans-serif;
+}
+
+#info {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    pointer-events: none;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Force the canvas to fill the screen layout */
+canvas {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+        /* Verhindert das Standard-Scrollen und Pinch-To-Zoom des Browsers auf dem Canvas */
+    touch-action: none; 
+    
+    /* Verhindert das blaue Aufleuchten beim Antippen auf iOS/Android */
+    -webkit-tap-highlight-color: transparent; 
+}
