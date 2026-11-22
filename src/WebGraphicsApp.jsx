@@ -1,21 +1,33 @@
-// app/external/web-graphics/src/WebGraphicsApp.jsx
 import { Routes, Route, NavLink, Navigate } from "react-router";
-import FirstTryPage from "./pages/FirstTryPage.jsx"; // or your existing component
-import SharkPage from "./pages/SharkPage.jsx";       // or your existing component
+import FirstTryScene from "./FirstTryScene.jsx";
+import SharkScene from "./SharkScene.jsx";
 
 export default function WebGraphicsApp() {
+  const linkStyle = ({ isActive }) => ({
+    padding: "6px 14px",
+    borderRadius: "6px",
+    textDecoration: "none",
+    fontWeight: 600,
+    fontSize: "0.9rem",
+    backgroundColor: isActive ? "#0ea5e9" : "#e2e8f0",
+    color: isActive ? "#ffffff" : "#1e293b",
+  });
+
   return (
-    <div className="web-graphics-wrapper">
-      <nav style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem" }}>
-        <NavLink to="first-try">First Try</NavLink>
-        <NavLink to="shark">Shark</NavLink>
+    <div>
+      <nav style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+        <NavLink to="shark" style={linkStyle}>
+          Shark (Hai-Spirale)
+        </NavLink>
+        <NavLink to="first-try" style={linkStyle}>
+          First Try
+        </NavLink>
       </nav>
 
       <Routes>
-        {/* Default to first-try when visiting /projects/web-graphics */}
-        <Route index element={<Navigate to="first-try" replace />} />
-        <Route path="first-try" element={<FirstTryPage />} />
-        <Route path="shark" element={<SharkPage />} />
+        <Route index element={<Navigate to="shark" replace />} />
+        <Route path="first-try" element={<FirstTryScene />} />
+        <Route path="shark" element={<SharkScene />} />
       </Routes>
     </div>
   );
