@@ -70,20 +70,22 @@ export default function SharkScene() {
       previousSegment = currentSegGroup;
     }
 
-    // Augen, Rücken-, Brust- und Schwanzflosse
+    // Augen am Kopf (Segment 0)
     const eyeGeo = new THREE.SphereGeometry(0.18, 8, 8);
     const leftEye = new THREE.Mesh(eyeGeo, eyeMaterial);
     leftEye.position.set(0.6, 0.4, 0.5);
     const rightEye = new THREE.Mesh(eyeGeo, eyeMaterial);
     rightEye.position.set(-0.6, 0.4, 0.5);
-    segments.add(leftEye, rightEye);
+    segments[0].add(leftEye, rightEye);
 
+    // Große Rückenflosse (Segment 2)
     const dorsalGeo = new THREE.ConeGeometry(0.3, 3.2, 4);
     dorsalGeo.rotateX(Math.PI / 3);
     const dorsalFin = new THREE.Mesh(dorsalGeo, sharkMaterial);
     dorsalFin.position.set(0, 1.8, 0);
-    segments.add(dorsalFin);
+    segments[2].add(dorsalFin);
 
+    // Brustflossen links und rechts (Segment 1)
     const pectoralGeo = new THREE.ConeGeometry(0.25, 4.0, 4);
     const leftPectoral = new THREE.Mesh(pectoralGeo, sharkMaterial);
     leftPectoral.position.set(1.8, -0.2, 0);
@@ -94,7 +96,8 @@ export default function SharkScene() {
     rightPectoral.position.set(-1.8, -0.2, 0);
     rightPectoral.rotation.z = -Math.PI / 2.5;
     rightPectoral.rotation.y = Math.PI / 6;
-    segments.add(leftPectoral, rightPectoral);
+    segments[1].add(leftPectoral, rightPectoral);
+
 
     const tailFinShape = new THREE.ConeGeometry(0.15, 3.5, 4);
     const tailFin = new THREE.Mesh(tailFinShape, sharkMaterial);
