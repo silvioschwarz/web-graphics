@@ -1,8 +1,9 @@
-name: Deploy Multiple Webgraphics
+name: Deploy Web Graphics Subsites to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,57 +12,63 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      # 1. Erstelle einen temporären Ordner, der alle fertigen Webseiten sammelt
-      - name: Create Deployment Directory
-        run: mkdir -p dist-all
-
-      # 2. PROJEKT 1: Hai-Spirale bauen und kopieren
-      - name: Build Project 1 (Hai Spirale)
+      - name: Build subsites into combined dist/
         run: |
-          cd shark
-          npm ci
-          npm run build
-          cd ..
-          mkdir -p dist-all/shark
-          cp -r shark/dist/* dist-all/shark/ # Passe 'dist' an, falls der Ausgabeordner anders heißt
+          mkdir -p dist/first-try dist/shark
 
-#      # 3. PROJEKT 2: MPC-Sampler bauen und kopieren
-#      - name: Build Project 2 (MPC Sampler)
-#        run: |
-#          cd mpc-sampler
-#          npm ci
-#          npm run build
-#          cd ..
-#          mkdir -p dist-all/mpc-sampler
-#          cp -r mpc-sampler/dist/* dist-all/mpc-sampler/
+          # Build first-try
+          npm --prefix first-try ci
+          npm --prefix first-try run build
+          cp -r first-try/dist/* dist/first-try/
 
-      # 4. GitHub Pages vorbereiten und den kombinierten Ordner hochladen
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+          # Build shark
+          npm --prefix shark ci
+          npm --prefix shark run build
+          cp -r shark/dist/* dist/shark/
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-pages-artifact@v3
+          # Root index page linking to both subsites
+          cat << 'EOF' > dist/index.html
+          <!doctype html>
+          <html lang="de">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>Web Graphics</title>
+              <style>
+                body { font-family: system-ui, sans-serif; padding: 2rem; background: #0f172a; color: #f8fafc; }
+                a { color: #38bdf8; font-size: 1.2rem; display: block; margin: 0.75rem 0; }
+              </style>
+            </head>
+            <body>
+              <h1>Web Graphics</h1>
+              <a href="./first-try/">First Try</a>
+              <a href="./shark/">Three.js Hai-Spirale (Shark)</a>
+            </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: './dist-all' # Lädt den gesamten Sammelordner hoch
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
