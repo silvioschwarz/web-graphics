@@ -1,8 +1,12 @@
-import { Routes, Route, NavLink, Navigate } from "react-router";
+import { Routes, Route, NavLink, Navigate, useLocation } from "react-router";
 import FirstTryScene from "./FirstTryScene.jsx";
 import SharkScene from "./SharkScene.jsx";
 
 export default function WebGraphicsApp() {
+  const { pathname } = useLocation();
+  // Entfernt ein eventuelles /shark oder /first-try am Ende, um die saubere Basis-URL zu erhalten
+  const basePath = pathname.replace(/\/(shark|first-try)\/?$/, "");
+
   const linkStyle = ({ isActive }) => ({
     padding: "6px 14px",
     borderRadius: "6px",
@@ -16,10 +20,10 @@ export default function WebGraphicsApp() {
   return (
     <div>
       <nav style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
-        <NavLink to="shark" relative="route"  style={linkStyle}>
+        <NavLink to={`${basePath}/shark`} style={linkStyle}>
           Shark (Hai-Spirale)
         </NavLink>
-        <NavLink to="first-try" relative="route"  style={linkStyle}>
+        <NavLink to={`${basePath}/first-try`} style={linkStyle}>
           First Try
         </NavLink>
       </nav>
