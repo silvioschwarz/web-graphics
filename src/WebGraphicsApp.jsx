@@ -16,10 +16,10 @@ export default function WebGraphicsApp() {
   return (
     <div>
       <nav style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
-        <NavLink to="shark" style={linkStyle}>
+        <NavLink to="shark" relative="route"  style={linkStyle}>
           Shark (Hai-Spirale)
         </NavLink>
-        <NavLink to="first-try" style={linkStyle}>
+        <NavLink to="first-try" relative="route"  style={linkStyle}>
           First Try
         </NavLink>
       </nav>
